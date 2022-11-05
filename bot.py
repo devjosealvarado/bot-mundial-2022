@@ -153,12 +153,12 @@ async def on_message(message):
             for t in arg:
                 if t == True:
                     date = (team['local_date'])
-                    home = (team['home_team_en'])
-                    away = (team['away_team_en'])
+                    home_team = (team['home_team_en'])
+                    away_team = (team['away_team_en'])
                     await message.channel.send(f'''
                     \n
                     \nFecha: {date}
-                    \n{home} vs {away}
+                    \n{home_team} vs {away_team}
                     -------
                     ''')
         
@@ -167,12 +167,12 @@ async def on_message(message):
             for te in arg2:
                 if te == True:
                     date = (team['local_date'])
-                    home = (team['home_team_en'])
-                    away = (team['away_team_en'])
+                    home_team = (team['home_team_en'])
+                    away_team = (team['away_team_en'])
                     await message.channel.send(f'''
                     \n
                     \nFecha: {date}
-                    \n{home} vs {away}
+                    \n{home_team} vs {away_team}
                     --------
                     ''')
 
