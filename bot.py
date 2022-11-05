@@ -139,14 +139,6 @@ async def on_message(message):
         headers["Authorization"] = f"Bearer {tokenporfin}"
         response = requests.get('http://api.cup2022.ir/api/v1/match/', headers=headers)
         data_response = response.json()
-        print(data_response)
-       
-        # def getMatchG(name):
-        #     for team in data_response["data"]:
-        #         if team["group"] == 'G':
-        #             return team
-        
-        
         
         for team in data_response["data"]:
             arg = [team["home_team_en"] == name]
