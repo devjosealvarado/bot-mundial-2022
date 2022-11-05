@@ -81,6 +81,7 @@ async def on_message(message):
             """, [token])
             con.commit()
             await message.channel.send('Iniciaste sesión')
+            await message.channel.send('*Debe iniciar sesión nuevamente después de transcurridas 24 horas*')
         else:
             await message.channel.send('Ha habido un error:(')
     
