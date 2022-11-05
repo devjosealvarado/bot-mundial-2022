@@ -112,14 +112,17 @@ async def on_message(message):
 
         equipito = getTeam(f'{name}')
         # print(equipito)
-        await message.channel.send(f'''
-            \n{equipito['flag']}
-        ''')
-        await message.channel.send(f'''
-            \nPaís: {equipito['name_en']}
-            \nFIFA Code: {equipito['fifa_code']}
-            \nGrupo: {equipito['groups']}
-        ''')
+        if equipito is None:
+            await message.channel.send('Revise el pais')
+        else:
+            await message.channel.send(f'''
+                \n{equipito['flag']}
+                ''')
+            await message.channel.send(f'''
+                \nPaís: {equipito['name_en']}
+                \nFIFA Code: {equipito['fifa_code']}
+                \nGrupo: {equipito['groups']}
+                ''')
     
     if message.content.startswith('!partidos'):
         name = message.content.split(' ')[1].capitalize()
