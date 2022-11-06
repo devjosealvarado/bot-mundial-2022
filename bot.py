@@ -32,7 +32,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    
+
     if message.content.startswith('!help'):
         await message.channel.send('''
             \n¿Cómo usar el bot del mundial?
@@ -63,7 +63,7 @@ async def on_message(message):
             await message.channel.send('Usuario creado')
         else:
             await message.channel.send('Ha habido un error:(')
-        
+
     if message.content.startswith('!iniciar'):
         email = message.content.split(' ')[1]
         password = message.content.split(' ')[2]
@@ -84,8 +84,9 @@ async def on_message(message):
             await message.channel.send('*Debe iniciar sesión nuevamente después de transcurridas 24 horas*')
         else:
             await message.channel.send('Ha habido un error:(')
-    
+
     if message.content.startswith('!equipo'):
+        message_loading = await message.channel.send('Cargando...')
         token = cur.execute(f"""
             SELECT token FROM users
             WHERE discord_id = {message.author.id}
@@ -108,22 +109,24 @@ async def on_message(message):
                     return team
 
         name = message.content.split(' ')[1].capitalize()
-        
+
 
         equipito = getTeam(f'{name}')
         # print(equipito)
         if equipito is None:
             await message.channel.send('Revise el pais')
         else:
-            await message.channel.send(f'''
-                \n{equipito['flag']}
-                ''')
-            await message.channel.send(f'''
+            await message_loading.edit(content=f'''
+                
                 \nPaís: {equipito['name_en']}
                 \nFIFA Code: {equipito['fifa_code']}
                 \nGrupo: {equipito['groups']}
+                
                 ''')
-    
+            await message.channel.send(f'''
+            \n{equipito['flag']}
+            ''')
+
     if message.content.startswith('!partidos'):
         name = message.content.split(' ')[1].capitalize()
 
@@ -142,23 +145,23 @@ async def on_message(message):
         headers["Authorization"] = f"Bearer {tokenporfin}"
         response = requests.get('http://api.cup2022.ir/api/v1/match/', headers=headers)
         data_response = response.json()
-        
+
         def get_matchs(name):
             for team in data_response["data"]:
                 arg = [team["home_team_en"] == name]
                 for t in arg:
                     if t == True:
-                        
+
                         return (team['home_team_en'])
-            
+
             for team in data_response["data"]:
                 arg = [team["away_team_en"] == name]
                 for t in arg:
                     if t == True:
-                        
+
                         return (team['away_team_en'])
 
-                        
+
         if get_matchs(name) is None:
             await message.channel.send('Revíse el país')
         else:
@@ -234,14 +237,44 @@ async def on_message(message):
         data_response = response.json()
         # print(data_response)
         group = message.content.split(' ')[1].capitalize()
+        unique_index = group[0]
 
-        for team in data_response["data"]:
-            arg = [team["groups"] == group]
-            for t in arg:
-                if t == True:
-                    teams = team['name_en']
-                    await message.channel.send(f'''
-                    \n{teams}
-                    ''')
+        def getGroups(name):
+            for team in data_response["data"]:
+                if team["name_en"] == name:
+                    return team
+
+        def getGroupsLetter(name):
+            for team in data_response["data"]:
+                if team["groups"] == unique_index:
+                    return team
+        
+        if len(group) > 1:
+            if getGroups(group) is None:
+                await message.channel.send('Ha habído un error')
+            else:
+                equipito = getGroups(f'{group}')
+                group_index = equipito['groups']
+                for team in data_response["data"]:
+                    arg = [team["groups"] == group_index]
+                    for t in arg:
+                        if t == True:
+                            teams = team['name_en']
+                            await message.channel.send(f'''
+                            \n{teams}
+                            ''')
+                
+        elif len(group) == 1:
+            if getGroupsLetter(unique_index) is None:
+                await message.channel.send('Ha habído un error')
+            else:
+                for team in data_response["data"]:
+                    arg = [team["groups"] == unique_index]
+                    for t in arg:
+                        if t == True:
+                            teams = team['name_en']
+                            await message.channel.send(f'''
+                            \n{teams}
+                            ''')
 
 client.run(os.environ['TOKEN'])
