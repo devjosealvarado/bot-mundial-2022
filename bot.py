@@ -143,33 +143,78 @@ async def on_message(message):
         response = requests.get('http://api.cup2022.ir/api/v1/match/', headers=headers)
         data_response = response.json()
         
-        for team in data_response["data"]:
-            arg = [team["home_team_en"] == name]
-            for t in arg:
-                if t == True:
-                    date = (team['local_date'])
-                    home_team = (team['home_team_en'])
-                    away_team = (team['away_team_en'])
-                    await message.channel.send(f'''
-                    \n
-                    \nFecha: {date}
-                    \n{home_team} vs {away_team}
-                    -------
-                    ''')
-        
-        for team in data_response["data"]:
-            arg2 = [team["away_team_en"] == name]
-            for te in arg2:
-                if te == True:
-                    date = (team['local_date'])
-                    home_team = (team['home_team_en'])
-                    away_team = (team['away_team_en'])
-                    await message.channel.send(f'''
-                    \n
-                    \nFecha: {date}
-                    \n{home_team} vs {away_team}
-                    --------
-                    ''')
+        def get_matchs(name):
+            for team in data_response["data"]:
+                arg = [team["home_team_en"] == name]
+                for t in arg:
+                    if t == True:
+                        
+                        return (team['home_team_en'])
+            
+            for team in data_response["data"]:
+                arg = [team["away_team_en"] == name]
+                for t in arg:
+                    if t == True:
+                        
+                        return (team['away_team_en'])
+
+                        
+        if get_matchs(name) is None:
+            await message.channel.send('Revíse el país')
+        else:
+            for team in data_response["data"]:
+                arg = [team["home_team_en"] == name]
+                for t in arg:
+                    if t == True:
+                        date = (team['local_date'])
+                        home_team = (team['home_team_en'])
+                        away_team = (team['away_team_en'])
+                        flag1 = (team['home_flag'])
+                        flag2 = (team['away_flag'])
+                        await message.channel.send(f'''
+                        --------
+                        \n{date}
+                        ''')
+                        await message.channel.send(f'''
+                        \n{home_team}
+                        ''')
+                        await message.channel.send(f'''
+                        {flag1}
+                        ''')
+                        await message.channel.send('VS')
+                        await message.channel.send(f'''
+                        \n{away_team}
+                        ''')
+                        await message.channel.send(f'''
+                        {flag2}
+                        ''')
+
+            for team in data_response["data"]:
+                arg = [team["away_team_en"] == name]
+                for t in arg:
+                    if t == True:
+                        date = (team['local_date'])
+                        home_team = (team['home_team_en'])
+                        away_team = (team['away_team_en'])
+                        flag1 = (team['home_flag'])
+                        flag2 = (team['away_flag'])
+                        await message.channel.send(f'''
+                        --------
+                        \n{date}
+                        ''')
+                        await message.channel.send(f'''
+                        \n{home_team}
+                        ''')
+                        await message.channel.send(f'''
+                        {flag1}
+                        ''')
+                        await message.channel.send('VS')
+                        await message.channel.send(f'''
+                        \n{away_team}
+                        ''')
+                        await message.channel.send(f'''
+                        {flag2}
+                        ''')
 
     if message.content.startswith('!grupo'):
         token = cur.execute(f"""
