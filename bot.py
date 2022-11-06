@@ -42,7 +42,7 @@ async def on_message(message):
             \n*Comandos*:
             \n*!equipo* sirve para obtener la información de un equipo en particular y se utiliza así: *!equipo PAIS*
             \n*!partidos* sirve para obtener la lista de partidos para equipos específicos y se utilíza así: *!partidos PAIS*
-            \n*!grupo* sirve para saber que equipos conforman los grupos A,B,C,D,E,F,G,H y se utilíza así: *!grupo LETRA*
+            \n*!grupo* sirve para saber que equipos conforman los grupos A,B,C,D,E,F,G,H y se utilíza así: *!grupo LETRA* o también *!grupo PAIS* y de esa manera se podrá saber los equipos que conforman el grupo en cual está el equipo indicado
         ''')
 
     if message.content.startswith('!registro'):
